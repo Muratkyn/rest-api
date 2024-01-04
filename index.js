@@ -33,6 +33,15 @@ app.post('/users', (req, res) => {
     res.json(userList)
 })
 
+app.put('/users', (req, res) => {
+
+    const newName = req.body.newName
+    for (let i = 1; i < userList.length-1; i++){
+        userList[i].name = newName
+    }
+    res.json(userList)
+})
+
 app.delete('/users/:id', (req, res) => {
     
     const id = req.params.id;
