@@ -33,6 +33,17 @@ app.post('/users', (req, res) => {
     res.json(userList)
 })
 
+app.delete('/users/:id', (req, res) => {
+    
+    const id = req.params.id;
+    for (let i = 0; i < userList.length; i++) {
+        if(userList[i].id == id ) {
+            userList.splice(i, 1)
+        }
+    }
+    res.json(userList)
+})
+
 app.listen('3001', ()=> {
     console.log("app runs")
 })
