@@ -27,6 +27,15 @@ app.get('/users', (req, res) => {
     res.json(userList)
 })
 
+app.get('/users/:id', (req,res) => {
+    console.log(req.params)
+    const userId = req.params.id
+    const parsedId = parseInt(userId) // before we were getting string ids in the console 
+    const findId = userList.find(user => user.id === parsedId )
+    if(!findId) return res.status(400).send({msg: "Bad request"})
+    return res.status(201).send(findId)
+})
+
 app.post('/users', (req, res) => {
     const newUser = req.body
     userList.push(newUser)
