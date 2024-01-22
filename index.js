@@ -31,15 +31,30 @@ app.get('/users/:id', (req,res) => {
     console.log(req.params)
     const userId = req.params.id
     const parsedId = parseInt(userId) // before we were getting string ids in the console 
-    const findId = userList.find(user => user.id === parsedId )
-    if(!findId) return res.status(400).send({msg: "Bad request"})
+    const findId = userList.find(user => user.id === parsedId)
+    if(!findId) 
+    return res.status(400).sendStatus(404)
     return res.status(201).send(findId)
 })
+
+/* query params
+
+app.get('/users', (req,res) => {
+    console.log(req.query)
+    const { query: {filter, value} } = req
+    if(!filter && !value) return res.send(userList)
+    if(filter && value) return res.send (
+        userList.filter(user => user[filter].includes(value))
+    )
+    
+})
+
+*/
 
 app.post('/users', (req, res) => {
     const newUser = req.body
     userList.push(newUser)
-    res.json(userList)
+    res.send(userList)
 })
 
 app.put('/users', (req, res) => {
@@ -49,6 +64,16 @@ app.put('/users', (req, res) => {
         userList[i].name = newName
     }
     res.json(userList)
+})
+
+///updating a user
+app.put('/users/:id', (req,res) => {
+    const { body, params: { id } } = req
+    const parsedId = parseInt(id)
+    if( isNaN(parsedId)) return res.sendStatus(400)
+    const findIndex = userList.findIndex(user => user.id === parsedId )
+    userList[findIndex] = { id: parsedId, ...body }
+    return res.status(201)
 })
 
 app.delete('/users/:id', (req, res) => {
