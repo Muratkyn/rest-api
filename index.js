@@ -51,6 +51,8 @@ app.get('/users', (req,res) => {
 
 */
 
+
+
 app.post('/users', (req, res) => {
     const newUser = req.body
     userList.push(newUser)
@@ -66,13 +68,24 @@ app.put('/users', (req, res) => {
     res.json(userList)
 })
 
-///updating a user
+///updating a user Put request
 app.put('/users/:id', (req,res) => {
     const { body, params: { id } } = req
     const parsedId = parseInt(id)
     if( isNaN(parsedId)) return res.sendStatus(400)
     const findIndex = userList.findIndex(user => user.id === parsedId )
     userList[findIndex] = { id: parsedId, ...body }
+    return res.status(201)
+})
+
+/// Patch Request 
+
+app.patch('/users/:id', (req,res) => {
+    const { body, params: { id } } = req
+    const parsedId = parseInt(id)
+    if( isNaN(parsedId)) return res.sendStatus(400)
+    const findIndex = userList.findIndex(user => user.id === parsedId )
+    userList[findIndex] = { ...userList[findIndex], ...body }
     return res.status(201)
 })
 
