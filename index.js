@@ -2,6 +2,15 @@ const express = require ('express')
 const app = express()
 app.use(express.json())
 
+
+const logMiddleware = (req, res, next) => {
+    console.log(`${req.method} - ${req.url}` )
+    next()
+}
+
+ // app.use(logMiddleware);
+ // GET - /users/1 we log the base url we r getting with the request. 
+
 let userList = [
     {
         id: 1,
@@ -23,11 +32,11 @@ let userList = [
     }
 ]
 
-app.get('/users', (req, res) => {
+app.get('/users', logMiddleware, (req, res) => {
     res.json(userList)
 })
 
-app.get('/users/:id', (req,res) => {
+app.get('/users/:id', logMiddleware, (req,res) => {
     console.log(req.params)
     const userId = req.params.id
     const parsedId = parseInt(userId) // before we were getting string ids in the console 
